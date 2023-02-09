@@ -17,8 +17,8 @@ library(ggplot2)
 
 # Your code here
 ggplot(data = home_owner) +
-  geom_line(mapping = aes(x = year, y = home_owner_pct)) +
-  geom_point(mapping = aes(x = year, y = home_owner_pct))
+  geom_line(mapping = aes(x = year, y = home_owner_pct, color = race)) +
+  geom_point(mapping = aes(x = year, y = home_owner_pct, color = race))
 
 # Make a line plot of the percentage of homeowners for racial categories over time
 # and color the plot by racial category
