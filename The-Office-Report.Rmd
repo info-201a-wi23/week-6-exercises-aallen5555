@@ -1,18 +1,17 @@
 ---
-title: "The Office Report"
-author: "Your name"
+title: "IMDB Office Ratings"
+author: "Audrey Allen"
 date: '2023'
 output:
   html_document: default
   pdf_document: default
 ---
-
 1. Give the report a new title and add your own name
 2. Make a plot of average IMDB ratings per season
 3. Find the highest and lowest IMDB ratings for any episode of The Office
 4. Include an image from The Office somewhere in the report
 
-![](https://static.onecms.io/wp-content/uploads/sites/6/2018/05/gettyimages-141187266-2000.jpg)
+![](https://i.pinimg.com/564x/53/90/7f/53907f287c469f9db37731697f21712c.jpg)
 
 Here's a plot of average IMDB rating for each season of The Office.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
@@ -23,22 +22,27 @@ library("ggplot2")
 # Load The Office data from this URL:
 # https://raw.githubusercontent.com/melaniewalsh/Neat-Datasets/main/TheOfficeIMDBPerEpisode.csv
 # This data is drawn from Kaggle: https://www.kaggle.com/datasets/kapastor/the-office-imdb-ratings-per-episode
-office_df <- NULL
+office_df <- read.csv("https://raw.githubusercontent.com/melaniewalsh/Neat-Datasets/main/TheOfficeIMDBPerEpisode.csv")
+
+office_df$AirDate <- as.Date(office_df$AirDate)
 
 # Which season of The Office was the best?
 # Calculate the average IMDB rating for each season
-rating_per_season <- NULL
+rating_per_season <- office_df %>% group_by(Season) %>% summarize(avg_rating = mean(Rating))
 
 # Now plot the average IMDB rating for each season as a scatterplot, a line plot, or both
 # Your ggplot code here
+ggplot(data = rating_per_season) +
+  geom_line(mapping = aes(x = Season, y = avg_rating)) +
+  geom_point(mapping = aes(x = Season, y = avg_rating))
 ```
 
 ```{r, echo=FALSE}
 # Find the highest IMDB rating for any episode of The Office and pull the value
-highest_rating <- NULL
+highest_rating <- office_df %>% summarize(max_rating = max(Rating)) %>% pull(max_rating)
 
 # Find the lowest IMDB rating for any episode of The Office and pull the value
-lowest_rating <- NULL
+lowest_rating <- office_df %>% summarize(min_rating = min(Rating)) %>% pull(min_rating)
 ```
 
 The highest IMDB rating for any episode of The Office is `r highest_rating`, and the lowest rating is `r lowest_rating`.
